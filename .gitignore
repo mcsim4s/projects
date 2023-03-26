@@ -1,0 +1,8 @@
+*.class
+*.log
+
+.ijwb
+bazel-bin
+bazel-out
+bazel-projects
+bazel-testlogs

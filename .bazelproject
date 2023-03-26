@@ -1,0 +1,12 @@
+directories:
+  .
+
+derive_targets_from_directories: true
+
+targets:
+  //...
+
+additional_languages:
+  javascript
+  scala
+  typescript

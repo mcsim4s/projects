@@ -1,0 +1,3 @@
+# run scala compiler with a persistent worker
+build --strategy=Scalac=worker
+build --worker_sandboxing
