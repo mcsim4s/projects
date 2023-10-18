@@ -5,9 +5,10 @@ scala_toolchain(
     dependency_mode = "transitive",
     dependency_tracking_method = "high-level",
     enable_stats_file = False,
+    scalac_jvm_flags = ["-Djava.security.manager=allow"],
     scalacopts = [
         "-release",
-        "17",
+        "21",
         "-deprecation",
         "-explaintypes",
         "-feature",

@@ -13,8 +13,6 @@ http_archive(
     url = "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/{}/bazel-skylib-{}.tar.gz".format(skylib_version, skylib_version),
 )
 
-# ======================================================================================
-
 # ================================ JAVA ================================================
 
 RULES_JVM_EXTERNAL_TAG = "4.3"
@@ -36,25 +34,39 @@ load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
 
 rules_jvm_external_setup()
 
-load("@rules_jvm_external//:defs.bzl", "maven_install")
+load("@bazel_tools//tools/jdk:remote_java_repository.bzl", "remote_java_repository")
 
-# ======================================================================================
+remote_java_repository(
+    name = "corretto_jdk_21",
+    prefix = "corretto",
+    sha256 = "b4161b887ebbf68d6400608d2fccedb599bf18fd79e3e9c9dbfc0e27e1ed4ce1",
+    strip_prefix = "amazon-corretto-21.jdk/Contents/Home",
+    target_compatible_with = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:macos",
+    ],
+    url = "https://corretto.aws/downloads/latest/amazon-corretto-21-aarch64-macos-jdk.tar.gz",
+    version = "21",
+)
+
+register_toolchains("//bazel/java:corretto_21_toolchain_definition")
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 # ================================ SCALA ===============================================
 
-rules_scala_version = "c711b4d1f0d1cc386c63ef748c9df14d2f3a187e"
+rules_scala_version = "6.2.1"
 
 http_archive(
     name = "io_bazel_rules_scala",
-    sha256 = "556677f505634da64efc41912d280895e61f5da109d82bdee41cde4120a190a1",
+    sha256 = "71324bef9bc5a885097e2960d5b8effed63399b55572219919d25f43f468c716",
     strip_prefix = "rules_scala-%s" % rules_scala_version,
-    type = "zip",
-    url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version,
+    url = "https://github.com/bazelbuild/rules_scala/releases/download/v%s/rules_scala-v%s.tar.gz" % (rules_scala_version, rules_scala_version),
 )
 
 load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
 
-scala_config(scala_version = "2.13.6")
+scala_config(scala_version = "2.13.12")
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "rules_scala_setup", "rules_scala_toolchain_deps_repositories")
 
